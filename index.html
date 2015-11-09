@@ -39,23 +39,25 @@
               </h5>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <h5>
-                <a href="" ng-click="sorting = 'date'; reverse=!reverse">
-                  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Sort By Date
-                </a>
-              </h5>
+        </div>
+          <div class="col-md-4">
+            <div class="row">
+              <div class="col-md-12">
+                <h5>
+                  <a href="" ng-click="sorting = 'date'; reverse=!reverse">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Sort By Date
+                  </a>
+                </h5>
+              </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
     <span am-time-ago="time"></span>
     <div class="row" ng-show="form == true">
       <div class="col-md-6 col-md-offset-3 text-center">
         <h3>Create ReadingIt Post</h3>
-        <div class="jumbotron">
+        <div class="addPost">
           <form ng-submit="submit()">
             <h4>Title</h4>
             <input type="text" ng-model="post.title" placeholder="Title">
@@ -72,7 +74,7 @@
     </div>
     <div clas="row">
       <div class="col-md-8 col-md-offset-2" ng-repeat="post in posts | orderBy:sorting:reverse | filter:search:strict">
-        <div class="col-md-12 postBg">
+        <div class="col-md-12 viewPost">
           <div class="col-md-3">
             <img ng-src="{{post.imageURL}}" width="150px">
           </div>

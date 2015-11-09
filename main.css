@@ -1,0 +1,30 @@
+.navbar {
+  background-color: #ADD8E6
+}
+.postBg {
+  background-color: #D3D3D3;
+  margin: 20px;
+  padding: 20px;
+}
+
+.belowZero {
+  color: red;
+}
+.aboveZero {
+  color: green;
+}
+
+.addPost {
+  background-color: white;
+  padding: 15px
+}
+.viewPost {
+  background-color: white;
+  border: 10px;
+  border-color: #ADD8E6;
+  padding: 40px;
+  margin-top: 10px
+}
+body {
+  background: #F0F0F0 !important;
+}
