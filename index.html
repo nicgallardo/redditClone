@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html ng-app="redditApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Reddit Clone Reduex</title>
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+  </head>
+  <body ng-controller="redditCtrl">
+    <div class="row">
+      <div class="col-md-12 navbar">
+        <div class="col-md-2">
+          <h4>
+            ReadingIt
+          </h4>
+        </div>
+        <div class="col-md-2">
+          <div class="dropdown">
+            <h5>
+              <a ng-click="formShow()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Submit Post
+              </a>
+            </h5>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <h5>
+            <input type="text" input ng-model="search.$" placeholder="Search Posts">
+          </h5>
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <h5>
+                <a href="" ng-click="sorting = 'count'; reverse=!reverse">
+                  <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Sort By Votes
+                </a>
+              </h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h5>
+                <a href="" ng-click="sorting = 'date'; reverse=!reverse">
+                  <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Sort By Date
+                </a>
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span am-time-ago="time"></span>
+    <div class="row" ng-show="form == true">
+      <div class="col-md-6 col-md-offset-3 text-center">
+        <h3>Create ReadingIt Post</h3>
+        <div class="jumbotron">
+          <form ng-submit="submit()">
+            <h4>Title</h4>
+            <input type="text" ng-model="post.title" placeholder="Title">
+            <h4>Author</h4>
+            <input type="text" ng-model="post.author" placeholder="author">
+            <h4>Image URL</h4>
+            <input type="text" ng-model="post.imageURL" placeholder="Image URL">
+            <h4>Description</h4>
+            <input type="text" ng-model="post.description" placeholder="Description">
+            <input type="submit" value="Submit Post">
+          </form>
+        </div>
+      </div>
+    </div>
+    <div clas="row">
+      <div class="col-md-8 col-md-offset-2" ng-repeat="post in posts | orderBy:sorting:reverse | filter:search:strict">
+        <div class="col-md-12 postBg">
+          <div class="col-md-3">
+            <img ng-src="{{post.imageURL}}" width="150px">
+          </div>
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-12">
+                <h4>
+                  {{post.title}} | <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" ng-click="count = count + 1" ng-init="count=0"></span>  <span ng-class="{belowZero: count < 0, aboveZero: count > 0}">{{count}}</span>  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true" ng-click="count = count - 1"></span>
+                </h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <p>
+                  by: {{post.author}} <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                {{post.description}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span><span am-time-ago="post.postDate"></span>
+              </div>
+              <div class="col-md-4">
+                <a ng-click="commentsShow()">
+                  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    <ng-pluralize count="post.comments.length"
+                      when="{'0': 'be the first to comment',
+                      '1': 'view the comment',
+                      'other': 'view all comments'}">
+                     </ng-pluralize>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a ng-click="commentFormShow()">
+                  <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Add Comment
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="row" ng-show="post.commentForm == true">
+            <div class="col-md-6 col-md-offset-3 text-center">
+              <h3>Create Comment</h3>
+              <div class="jumbotron">
+                <form ng-submit="submitComment()">
+                  <h4>Comment</h4>
+                  <input type="text" ng-model="createComment.comment" placeholder="comment">
+                  <h4>Author</h4>
+                  <input type="text" ng-model="createComment.author" placeholder="author">
+                  <input type="submit" value="Submit Comment">
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="row" ng-show="post.commentsShow == true">
+            <div class="col-md-11 text-left" ng-repeat="comment in post.comments">
+                  <h5>Comment:</h5>
+                    <span>
+                      {{comment.comment}}
+                    </span>
+                  <h5>Author:</h5>
+                  <span>
+                    {{comment.author}}
+                  </span>
+              </div>
+              <div class="col-md-12">
+                <a ng-click="commentsClose()">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> exit comments
+                </a>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular.min.js" type="text/javascript"></script>
+    <script src="./js/app.js" type="text/javascript"></script>
+    <script src="./js/controllers.js" type="text/javascript"></script>
+    <script src="./js/directives.js" type="text/javascript"></script>
+    <script src="./js/filters.js" type="text/javascript"></script>
+    <script src="./js/services.js" type="text/javascript"></script>
+  </body>
+</html>
