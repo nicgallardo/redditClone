@@ -1,0 +1,15 @@
+.navbar {
+  background-color: #D3D3D3
+}
+.postBg {
+  background-color: #D3D3D3;
+  margin: 20px;
+  padding: 20px;
+}
+
+.belowZero {
+  color: red;
+}
+.aboveZero {
+  color: green;
+}
